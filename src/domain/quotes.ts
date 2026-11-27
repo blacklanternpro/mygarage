@@ -17,6 +17,7 @@ import {
   isDrawnSignature,
   isFullName,
   licenceLabel,
+  sanitizeSignatureSvg,
   unsafeRefusalSchema,
   type UnsafeRefusalInput,
 } from "./compliance";
@@ -173,7 +174,7 @@ export async function approveFixedQuote(svc: Svc, quoteId: string, input: z.infe
     quoteId: q.id,
     findingId: q.findingIds[0] ?? null,
     signerName: input.signerName,
-    signatureSvg: input.signatureSvg,
+    signatureSvg: sanitizeSignatureSvg(input.signatureSvg),
     payload: {
       quoteNumber: q.quoteNumber,
       title: q.title,
@@ -222,7 +223,7 @@ async function recordRefusal(svc: Svc, f: Finding, refusal: UnsafeRefusalInput, 
     findingId: f.id,
     quoteId: quote?.id ?? null,
     signerName: refusal.signerName,
-    signatureSvg: refusal.signatureSvg,
+    signatureSvg: sanitizeSignatureSvg(refusal.signatureSvg),
     acknowledgements: refusal.acknowledgements,
     payload: {
       findingTitle: f.title,

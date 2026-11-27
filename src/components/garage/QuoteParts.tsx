@@ -34,8 +34,7 @@ export function LineItemsTable({ items, dense = false, checked, onToggle }: { it
       <thead className="sr-only">
         <tr>
           {onToggle ? <th>Approve</th> : null}
-          <th>Item</th>
-          <th>Qty or hours</th>
+          <th>Item, quantity or hours</th>
           <th>Amount</th>
         </tr>
       </thead>
@@ -55,11 +54,12 @@ export function LineItemsTable({ items, dense = false, checked, onToggle }: { it
                   />
                 </td>
               ) : null}
-              <td className="py-2 pr-2">
+              <td className="py-2 pr-3">
                 <span className="block leading-snug">{li.description}</span>
-                <span className="text-[12px] text-slate">{li.kind === "LABOUR" ? "Labour" : li.kind === "FEE" ? "Fee" : "Part"}</span>
+                <span className="text-[12px] text-slate">
+                  {li.kind === "LABOUR" ? "Labour" : li.kind === "FEE" ? "Fee" : "Part"} <span className="readout">{qty(li)}</span>
+                </span>
               </td>
-              <td className="readout whitespace-nowrap py-2 pr-2 text-right text-[12.5px] text-slate">{qty(li)}</td>
               <td className="readout whitespace-nowrap py-2 text-right">{formatAudExact(li.totalCents)}</td>
             </tr>
           );

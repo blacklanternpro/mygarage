@@ -79,7 +79,7 @@ export function DemoBar() {
                 key={s.href}
                 href={s.href}
                 aria-current={active ? "page" : undefined}
-                className={`inline-flex h-9 items-center gap-1.5 rounded px-2 text-[13px] font-semibold ${active ? "bg-white text-sump" : "text-white/85 hover:bg-white/10"}`}
+                className={`inline-flex h-9 items-center gap-1.5 rounded px-1.5 text-[13px] font-semibold sm:px-2 ${active ? "bg-white text-sump" : "text-white/85 hover:bg-white/10"}`}
               >
                 <Icon name={s.icon} size={16} />
                 <span className="sm:hidden">{s.short}</span>
@@ -88,7 +88,7 @@ export function DemoBar() {
             );
           })}
         </nav>
-        <div className="ml-auto flex items-center gap-0.5">
+        <div className="ml-auto flex shrink-0 items-center gap-0.5 pl-1">
           <button type="button" onClick={() => setMagic(true)} className="hidden h-9 items-center gap-1.5 rounded px-2 text-[13px] font-semibold text-white/85 hover:bg-white/10 md:inline-flex">
             <Icon name="link" size={16} /> SMS magic link
           </button>
@@ -98,7 +98,7 @@ export function DemoBar() {
             aria-expanded={inspector}
             className={`inline-flex h-9 items-center gap-1.5 rounded px-2 text-[13px] font-semibold ${inspector ? "bg-white/15" : "text-white/85 hover:bg-white/10"}`}
           >
-            <Icon name="signal" size={16} />
+            <Icon name="signal" size={16} className="hidden sm:block" />
             <span className="hidden sm:inline">Adapters</span>
             <span className="readout rounded-sm bg-rag-amber px-1 text-[10px] font-bold text-sump">MOCK</span>
           </button>

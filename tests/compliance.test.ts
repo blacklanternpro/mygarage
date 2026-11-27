@@ -62,3 +62,15 @@ describe("licence + sale pack + STT hygiene", () => {
     expect(stt.info.liveProvider).toMatch(/Nova-3/);
   });
 });
+
+describe("signature sanitising", () => {
+  it("drops scripts and attributes, keeps only path data", async () => {
+    const { sanitizeSignatureSvg, isDrawnSignature } = await import("@/domain/compliance");
+    const evil = `<svg viewBox="0 0 600 180" onload="alert(1)"><script>alert(2)</script><path d="M 1 2 L 3 4 L 5 6 L 7 8 L 9 10 L 11 12" onclick="x()"/><path d="javascript:alert(3)"/></svg>`;
+    const clean = sanitizeSignatureSvg(evil)!;
+    expect(clean).not.toMatch(/script|onload|onclick|javascript/);
+    expect(clean).toContain('d="M 1 2 L 3 4');
+    expect(isDrawnSignature(evil)).toBe(true);
+    expect(isDrawnSignature("<svg><script/></svg>")).toBe(false);
+  });
+});

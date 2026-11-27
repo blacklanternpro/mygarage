@@ -38,15 +38,17 @@ export function GarageView({ data }: { data: GarageData }) {
     <div className="pb-24 lg:pb-10">
       {/* Shop band */}
       <header className="text-white" style={{ background: workshop.brandPrimary }}>
-        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3.5 lg:px-6">
+        <div className="mx-auto flex max-w-[1280px] items-start gap-3 px-4 py-3.5 lg:items-center lg:px-6">
           <div className="min-w-0 flex-1">
             <p className="font-wide text-[17px] font-bold leading-tight">{workshop.name}</p>
-            <p className="text-[13px] text-white/75">
-              {workshop.suburb} {workshop.state}
-            </p>
+            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+              <span className="text-[13px] text-white/75">
+                {workshop.suburb} {workshop.state}
+              </span>
+              <LicenceTag label={data.licence} tone="light" />
+            </div>
           </div>
-          <LicenceTag label={data.licence} tone="light" />
-          <a href={`tel:${workshop.phone.replace(/\D/g, "")}`} className="inline-flex h-11 items-center gap-1.5 rounded-md border border-white/35 px-3 text-[14px] font-semibold hover:bg-white/10">
+          <a href={`tel:${workshop.phone.replace(/\D/g, "")}`} className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-md border border-white/35 px-3 text-[14px] font-semibold hover:bg-white/10">
             <Icon name="phone" size={17} /> Call
           </a>
         </div>
@@ -61,7 +63,7 @@ export function GarageView({ data }: { data: GarageData }) {
               {data.householdName} · {data.people.map((p) => p.firstName).join(" & ")}
             </p>
           </div>
-          <nav className="relative mt-3 flex snap-x snap-mandatory gap-2.5 overflow-x-auto px-4 pb-2 lg:flex-col lg:overflow-visible lg:px-0">
+          <nav className="relative mt-3 flex snap-x snap-mandatory scroll-px-4 gap-2.5 overflow-x-auto px-4 pb-2 lg:flex-col lg:overflow-visible lg:px-0">
             {cards.map((c) => {
               const active = c.vehicle.id === v.id;
               return (

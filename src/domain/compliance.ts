@@ -136,11 +136,26 @@ export function isFullName(name: string | undefined | null): boolean {
   return !!name && /\S+\s+\S+/.test(name.trim()) && name.trim().length >= 4;
 }
 
-/** A drawn signature is an SVG path with a reasonable number of points. */
+/**
+ * Signatures arrive as client-supplied SVG. Never store or render them verbatim: rebuild a
+ * canonical SVG from validated path data only (M/L commands and numbers), dropping everything else.
+ */
+export function sanitizeSignatureSvg(svg: string | undefined | null): string | null {
+  if (!svg || svg.length > 200_000) return null;
+  const ds = [...svg.matchAll(/\sd="([^"]*)"/g)].map((m) => m[1].trim()).filter((d) => /^[MLml0-9\s.,-]+$/.test(d) && d.length > 0);
+  if (!ds.length) return null;
+  const vb = svg.match(/viewBox="(\d+(?:\.\d+)? \d+(?:\.\d+)? \d+(?:\.\d+)? \d+(?:\.\d+)?)"/)?.[1] ?? "0 0 600 180";
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}">${ds
+    .map((d) => `<path d="${d}" fill="none" stroke="#1F2428" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`)
+    .join("")}</svg>`;
+}
+
+/** A drawn signature is (after sanitising) an SVG path with a reasonable number of points. */
 export function isDrawnSignature(svg: string | undefined | null): boolean {
-  if (!svg) return false;
-  const points = svg.match(/[ML]\s*-?\d/g);
-  return svg.includes("<path") && (points?.length ?? 0) >= 6;
+  const clean = sanitizeSignatureSvg(svg);
+  if (!clean) return false;
+  const points = clean.match(/[ML]\s*-?\d/g);
+  return (points?.length ?? 0) >= 6;
 }
 
 // ─── State repairer licence display ───────────────────────────────────────
