@@ -1,0 +1,20 @@
+# deps
+node_modules/
+# next
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+# local db + media (PGlite data dir, mock media)
+.data/
+# env
+.env
+.env*.local
+!.env.example
+# test / e2e artifacts
+coverage/
+test-results/
+playwright-report/
+# os
+.DS_Store
+Thumbs.db

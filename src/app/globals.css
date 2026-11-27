@@ -1,0 +1,307 @@
+@import "tailwindcss";
+
+/* MyGarage design tokens — see DESIGN.md */
+@theme {
+  --color-stone: #e6e3dc;
+  --color-stone-deep: #d9d5cc;
+  --color-bench: #f8f7f4;
+  --color-sump: #1f2428;
+  --color-slate: #4d5660;
+  --color-chalk: #cfcac0;
+  --color-brand: #1d4f66;
+  --color-brand-ink: #e9e4d8;
+
+  --color-rag-red: #c42f1c;
+  --color-rag-red-wash: #f6e1dc;
+  --color-rag-amber: #e08900;
+  --color-rag-amber-wash: #faedd5;
+  --color-rag-amber-ink: #7a4a00;
+  --color-rag-green: #2c7a4b;
+  --color-rag-green-wash: #dfeee4;
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-martian), ui-monospace, SFMono-Regular, monospace;
+
+  --text-2xs: 0.75rem;
+  --text-2xs--line-height: 1rem;
+
+  --shadow-sheet: 0 12px 40px rgb(31 36 40 / 0.18);
+  --radius-tag: 2px;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--color-stone);
+    color: var(--color-sump);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-brand);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--color-brand) 25%, transparent);
+  }
+}
+
+@layer components {
+  /* Tailgate badging — the one bold element (DESIGN.md §2.1) */
+  .font-tailgate {
+    font-family: var(--font-sans);
+    font-stretch: 125%;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .font-wide {
+    font-stretch: 112%;
+  }
+  .font-compact {
+    font-stretch: 80%;
+  }
+  /* Instruments: readouts only (rego, km, A$, VIN, hashes) */
+  .readout {
+    font-family: var(--font-mono);
+    font-stretch: 87.5%;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+
+  /* Dashed = indicative (ACL estimate) */
+  .estimate-box {
+    border: 1.5px dashed var(--color-slate);
+    border-radius: 6px;
+    background: color-mix(in oklab, var(--color-bench) 70%, transparent);
+  }
+  /* Solid + double rule = binding Fixed Quote */
+  .fixed-quote {
+    border: 1.5px solid var(--color-sump);
+    border-radius: 6px;
+    background: var(--color-bench);
+    box-shadow: inset 0 3px 0 var(--color-bench), inset 0 4.5px 0 var(--color-sump), inset 0 -3px 0 var(--color-bench), inset 0 -4.5px 0 var(--color-sump);
+  }
+
+  .job-tag {
+    position: relative;
+    background: var(--color-bench);
+    border: 1px solid var(--color-chalk);
+    border-radius: var(--radius-tag);
+    padding-left: 6px;
+  }
+  .job-tag::before {
+    content: "";
+    position: absolute;
+    inset: -1px auto -1px -1px;
+    width: 6px;
+    border-radius: 2px 0 0 2px;
+    background: var(--tag-colour, var(--color-chalk));
+  }
+
+  .plate {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    background: #fff;
+    color: var(--color-sump);
+    border: 2px solid var(--color-sump);
+    border-radius: 6px;
+    box-shadow: inset 0 0 0 2px #fff, inset 0 0 0 3px var(--color-sump);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-stretch: 100%;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.1;
+    transition: background-color 120ms, color 120ms, border-color 120ms, transform 80ms;
+    text-align: center;
+  }
+  .btn:active:not(:disabled) {
+    transform: translateY(1px);
+  }
+  .btn-primary {
+    background: var(--color-sump);
+    color: #fff;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: #33393f;
+  }
+  .btn-brand {
+    background: var(--color-brand);
+    color: #fff;
+  }
+  .btn-secondary {
+    border: 1.5px solid var(--color-sump);
+    color: var(--color-sump);
+    background: transparent;
+  }
+  .btn-secondary:hover:not(:disabled) {
+    background: color-mix(in oklab, var(--color-sump) 6%, transparent);
+  }
+  .btn-quiet {
+    color: var(--color-sump);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    padding: 0 0.5rem;
+  }
+  .btn-danger {
+    border: 1.5px solid var(--color-rag-red);
+    color: var(--color-rag-red);
+    background: transparent;
+  }
+  .btn:disabled {
+    opacity: 0.45;
+  }
+
+  .field {
+    width: 100%;
+    min-height: 44px;
+    border: 1.5px solid var(--color-chalk);
+    border-radius: 6px;
+    background: #fff;
+    padding: 0.55rem 0.75rem;
+    font-size: 16px;
+    color: var(--color-sump);
+  }
+  .field:focus {
+    border-color: var(--color-sump);
+    outline: none;
+  }
+  .label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+  }
+
+  .rule-heavy {
+    border-top: 2px solid var(--color-sump);
+  }
+}
+
+/* Motion: the two orchestrated moments (DESIGN.md §5) */
+@keyframes scan-sweep {
+  0% {
+    transform: translateY(-10%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(1000%);
+    opacity: 0;
+  }
+}
+.scan-line {
+  animation: scan-sweep 2.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+.flip-card {
+  perspective: 1400px;
+}
+.flip-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 400ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.flip-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.sheet-enter {
+  animation: sheet-up 160ms ease-out;
+}
+@keyframes push-drop {
+  from {
+    transform: translateY(-120%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.push-enter {
+  animation: push-drop 420ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgb(196 47 28 / 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 22px rgb(196 47 28 / 0);
+  }
+}
+.recording-pulse {
+  animation: pulse-ring 1.1s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scan-line,
+  .recording-pulse,
+  .sheet-enter,
+  .push-enter {
+    animation: none !important;
+  }
+  .flip-inner {
+    transition: none;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
