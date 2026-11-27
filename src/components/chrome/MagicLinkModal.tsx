@@ -41,7 +41,7 @@ export function MagicLinkModal({ open, onClose }: { open: boolean; onClose: () =
           <span className="readout mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sump text-[12px] text-white">1</span>
           <div className="min-w-0 flex-1">
             <p className="font-semibold">The workshop publishes a report</p>
-            <p className="text-[14px] text-slate">The customer gets one SMS from the workshop's registered Sender ID.</p>
+            <p className="text-[14px] text-slate">The customer gets one SMS from the workshop’s registered Sender ID.</p>
             {step === 0 ? (
               <button type="button" className="btn btn-primary mt-3" onClick={send} disabled={busy}>
                 <Icon name="message" size={18} /> {busy ? "Sending…" : "Send the SMS to Bec"}
@@ -79,7 +79,7 @@ export function MagicLinkModal({ open, onClose }: { open: boolean; onClose: () =
           <span className="readout mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sump text-[12px] text-white">3</span>
           <div className="min-w-0 flex-1">
             <p className="font-semibold">The household garage opens</p>
-            <p className="text-[14px] text-slate">All three vehicles, the shop's branding and the Add to Wallet prompt.</p>
+            <p className="text-[14px] text-slate">All three vehicles, the shop’s branding and the Add to Wallet prompt.</p>
             {step === 2 ? (
               <button
                 type="button"
@@ -89,7 +89,7 @@ export function MagicLinkModal({ open, onClose }: { open: boolean; onClose: () =
                   router.push("/");
                 }}
               >
-                <Icon name="car" size={18} /> Open Bec's garage
+                <Icon name="car" size={18} /> Open Bec’s garage
               </button>
             ) : null}
           </div>

@@ -60,7 +60,7 @@ export function MessageThread({ vehicleId, messages, authorName, workshopName }:
       <h2 id="msg-h" className="rule-heavy pt-2 text-[19px] font-bold">
         Messages about this vehicle
       </h2>
-      <p className="mt-1 text-[13px] text-slate">Goes straight to {workshopName}, attached to this vehicle. No more "which white ute?"</p>
+      <p className="mt-1 text-[13px] text-slate">Goes straight to {workshopName}, attached to this vehicle. No more “which white ute?”</p>
       <ul className="mt-3 space-y-2">
         {messages.length ? messages.map((m) => <Bubble key={m.id} m={m} />) : <li className="text-[14px] text-slate">No messages yet.</li>}
       </ul>

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { Suspense } from "react";
 import { DemoBar } from "@/components/chrome/DemoBar";
 import "./globals.css";
 
@@ -37,7 +38,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en-AU" className={`${archivo.variable} ${martian.variable}`}>
       <body className="min-h-dvh">
-        <DemoBar />
+        <Suspense fallback={<div className="no-print sticky top-0 z-40 h-11 bg-sump" aria-hidden="true" />}>
+          <DemoBar />
+        </Suspense>
         {children}
       </body>
     </html>

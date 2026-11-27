@@ -9,7 +9,9 @@ describe("voice → plain-English finding", () => {
     const d = structureDictation(clip("clip-rear-shock"));
     expect(d.severity).toBe("WATCH_AMBER");
     expect(d.category).toBe("SUSPENSION");
-    expect(d.position).toBe("rear left");
+    expect(d.position).toBe("rear");
+    expect(d.title).toBe("Rear shock absorbers misting oil");
+    expect(d.customerExplanation).toMatch(/Plan to sort them at your next service\./);
     expect(d.horizonText).toBe("At your next service");
     expect([d.estimateLowCents, d.estimateHighCents]).toEqual([40000, 45000]);
     expect(d.customerExplanation).toMatch(/leak a fine film of oil/);

@@ -87,12 +87,12 @@ function ApproveSheet({ quote, data, signer, onClose, onPay }: { quote: FixedQuo
             Approved and signed {formatDateTime(new Date())}. The workshop has been notified and will book it in.
           </SuccessBanner>
           <p className="text-[14px]">
-            Your approval is stored in the workshop's compliance vault as entry <span className="readout">#{done.auditSeq}</span>, sealed with hash <span className="readout break-all text-[12px]">{done.contentHash.slice(0, 24)}…</span>
+            Your approval is stored in the workshop’s compliance vault as entry <span className="readout">#{done.auditSeq}</span>, sealed with hash <span className="readout break-all text-[12px]">{done.contentHash.slice(0, 24)}…</span>
           </p>
         </div>
       ) : (
         <div className="space-y-4">
-          <p className="text-[14px] text-slate">Untick anything you don't want done. You only authorise the ticked lines.</p>
+          <p className="text-[14px] text-slate">Untick anything you don’t want done. You only authorise the ticked lines.</p>
           <LineItemsTable items={quote.lineItems} checked={lines} onToggle={(id) => setLines((ls) => (ls.includes(id) ? ls.filter((x) => x !== id) : [...ls, id]))} />
           <TotalsBlock items={quote.lineItems} approved={lines} />
           <div>
@@ -158,7 +158,7 @@ function RefusalSheet({ finding, data, signer, onClose, onBook }: { finding: Fin
         <div className="space-y-3">
           <SuccessBanner>Your acknowledgement is signed, timestamped and stored with {data.workshop.name}. You can still book the repair any time.</SuccessBanner>
           <p className="text-[14px]">
-            Please don't drive further than you need to. To arrange a tow, call <a className="font-semibold underline" href={`tel:${data.workshop.phone.replace(/\D/g, "")}`}>{data.workshop.phone}</a>.
+            Please don’t drive further than you need to. To arrange a tow, call <a className="font-semibold underline" href={`tel:${data.workshop.phone.replace(/\D/g, "")}`}>{data.workshop.phone}</a>.
           </p>
         </div>
       ) : (
@@ -284,7 +284,7 @@ function PlanSheet({ finding, data, onClose }: { finding: FindingView; data: Gar
     >
       {done ? (
         <SuccessBanner>
-          We'll remind you on {done} on your lock screen (Wallet) or by SMS. No pressure. It stays on your roadmap.
+          We’ll remind you on {done} on your lock screen (Wallet) or by SMS. No pressure. It stays on your roadmap.
         </SuccessBanner>
       ) : (
         <div className="space-y-3">
@@ -334,7 +334,7 @@ function ResolvedSheet({ finding, onClose }: { finding: FindingView; onClose: ()
         </button>
       }
     >
-      <p className="text-[15px]">Had it fixed somewhere else? That's fine. We'll take it off your watch-list and stop the reminders.</p>
+      <p className="text-[15px]">Had it fixed somewhere else? That’s fine. We’ll take it off your watch-list and stop the reminders.</p>
       <label className="label mt-4" htmlFor="resolved-note">
         Where or when (optional)
       </label>
@@ -469,7 +469,7 @@ function WalletSheet({ data, onClose }: { data: GarageData; onClose: () => void 
       </button>
       {data.lastPush ? (
         <p className="mt-2 text-[12.5px] text-slate">
-          Last push {formatDateTime(data.lastPush.at)}: "{data.lastPush.message}"
+          Last push {formatDateTime(data.lastPush.at)}: “{data.lastPush.message}”
         </p>
       ) : null}
       <div className="mt-2">

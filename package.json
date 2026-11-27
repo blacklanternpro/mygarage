@@ -13,7 +13,7 @@
     "db:seed": "tsx scripts/seed.ts",
     "samples:pdf": "tsx scripts/make-sample-pdf.ts",
     "e2e:smoke": "tsx scripts/smoke.ts",
-    "verify": "npm run typecheck && npm test && npm run build"
+    "verify": "npm run lint && npm run typecheck && npm test && npm run build"
   },
   "dependencies": {
     "@electric-sql/pglite": "^0.6.0",

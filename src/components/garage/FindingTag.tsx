@@ -24,7 +24,7 @@ function StatusLine({ f }: { f: FindingView }) {
     case "PLANNED":
       return (
         <p className={`${base} text-sump`}>
-          <Icon name="clock" size={16} className="mt-px shrink-0" /> Reminder set for {f.plannedRemindAt ? formatDate(f.plannedRemindAt) : "later"}. We'll nudge you on your lock screen.
+          <Icon name="clock" size={16} className="mt-px shrink-0" /> Reminder set for {f.plannedRemindAt ? formatDate(f.plannedRemindAt) : "later"}. We’ll nudge you on your lock screen.
         </p>
       );
     case "QUOTE_REQUESTED":

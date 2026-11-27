@@ -136,7 +136,9 @@ export function structureDictation(transcript: string): FindingDraft {
   const comp = COMPONENTS.find(([re]) => re.test(t));
   const plural = /\b(pair|both|all round|all four|pads|shocks|tyres|blades|wipers|shoes)\b/i.test(t);
   const component = comp ? (plural ? comp[2] : comp[1]) : (CATEGORY_LABELS[category] ?? "Item").toLowerCase();
-  const position = parsePosition(t);
+  // "Left rear shock … for the pair" means both rear shocks: keep the axle, drop the side.
+  const rawPosition = parsePosition(t);
+  const position = rawPosition && /\b(pair|both)\b/i.test(t) ? (rawPosition.match(/front|rear/)?.[0] ?? null) : rawPosition;
   const measurement = parseMeasurement(t);
   const range = severity === "HEALTHY_GREEN" ? null : parseRange(t);
   const jargon = JARGON.filter(([re]) => re.test(t)).map(([, heard, plain]) => ({ heard, plain }));
@@ -159,7 +161,9 @@ export function structureDictation(transcript: string): FindingDraft {
   if (severity === "HEALTHY_GREEN") customerExplanation = `We checked your ${component}${measurement ? ` (${measurement})` : ""} and ${verb === "are" ? "they're" : "it's"} in good shape.`;
   else {
     const what = condition ? condition.plain.replace(/^is /, verb === "are" ? "are " : "is ") : measurement ? `${verb} down to ${measurement}` : `${verb} wearing`;
-    const why = severity === "URGENT_RED" ? " This affects how safely the vehicle stops or handles, so please book it in before you drive much further." : ` It's not urgent yet. ${horizonText ? `Plan for it: ${horizonText.charAt(0).toLowerCase()}${horizonText.slice(1)}.` : "Keep an eye on it."}`;
+    const pronoun = verb === "are" ? "them" : "it";
+    const when = horizonText && horizonText !== "Keep an eye on it" ? `Plan to sort ${pronoun} ${horizonText.charAt(0).toLowerCase()}${horizonText.slice(1)}.` : `Keep an eye on ${pronoun}.`;
+    const why = severity === "URGENT_RED" ? " This affects how safely the vehicle stops or handles, so please book it in before you drive much further." : ` It's not urgent yet. ${when}`;
     customerExplanation = `Your ${position ? `${position} ` : ""}${component} ${what}.${why}`;
   }
   const confidence = Math.min(0.98, 0.55 + (comp ? 0.15 : 0) + (range ? 0.1 : 0) + (horizonText ? 0.08 : 0) + (position ? 0.05 : 0) + (measurement ? 0.05 : 0));

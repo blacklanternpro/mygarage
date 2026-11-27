@@ -1,26 +1,34 @@
 "use client";
-import { useCallback, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-/** Finger/stylus signature captured as an SVG path (stored verbatim and hashed in the vault). */
+const W = 600;
+const H = 180;
+
+/** Finger/stylus signature captured as an SVG path (sanitised server-side, hashed in the vault). */
 export function SignaturePad({ onChange, label = "Sign here" }: { onChange: (svg: string | null) => void; label?: string }) {
   const [paths, setPaths] = useState<string[]>([]);
-  const drawing = useRef<string | null>(null);
+  const pathsRef = useRef<string[]>([]);
+  const drawing = useRef(false);
   const box = useRef<SVGSVGElement>(null);
-  const W = 600;
-  const H = 180;
 
+  const commit = (next: string[]) => {
+    pathsRef.current = next;
+    setPaths(next);
+  };
+  const emit = () => {
+    const d = pathsRef.current.join(" ");
+    const points = (d.match(/[ML]/g) ?? []).length;
+    onChange(points >= 6 ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}"><path d="${d}" fill="none" stroke="#1F2428" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>` : null);
+  };
   const point = (e: React.PointerEvent) => {
     const r = box.current!.getBoundingClientRect();
     return `${Math.round(((e.clientX - r.left) / r.width) * W)} ${Math.round(((e.clientY - r.top) / r.height) * H)}`;
   };
-  const emit = useCallback(
-    (ps: string[]) => {
-      const d = ps.join(" ");
-      const points = (d.match(/[ML]/g) ?? []).length;
-      onChange(points >= 6 ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}"><path d="${d}" fill="none" stroke="#1F2428" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>` : null);
-    },
-    [onChange],
-  );
+  const finish = () => {
+    if (!drawing.current) return;
+    drawing.current = false;
+    emit();
+  };
 
   return (
     <div>
@@ -28,9 +36,9 @@ export function SignaturePad({ onChange, label = "Sign here" }: { onChange: (svg
         <span className="label mb-0">{label}</span>
         <button
           type="button"
-          className="btn-quiet text-[14px]"
+          className="btn btn-quiet min-h-10 text-[14px]"
           onClick={() => {
-            setPaths([]);
+            commit([]);
             onChange(null);
           }}
         >
@@ -45,30 +53,17 @@ export function SignaturePad({ onChange, label = "Sign here" }: { onChange: (svg
         aria-label="Signature area. Draw your signature with your finger or a mouse."
         onPointerDown={(e) => {
           (e.target as Element).setPointerCapture?.(e.pointerId);
-          drawing.current = `M ${point(e)}`;
-          setPaths((p) => [...p, drawing.current!]);
+          drawing.current = true;
+          commit([...pathsRef.current, `M ${point(e)}`]);
         }}
         onPointerMove={(e) => {
           if (!drawing.current) return;
-          drawing.current += ` L ${point(e)}`;
-          setPaths((p) => [...p.slice(0, -1), drawing.current!]);
+          const ps = pathsRef.current;
+          commit([...ps.slice(0, -1), `${ps[ps.length - 1]} L ${point(e)}`]);
         }}
-        onPointerUp={() => {
-          drawing.current = null;
-          setPaths((p) => {
-            emit(p);
-            return p;
-          });
-        }}
-        onPointerLeave={() => {
-          if (drawing.current) {
-            drawing.current = null;
-            setPaths((p) => {
-              emit(p);
-              return p;
-            });
-          }
-        }}
+        onPointerUp={finish}
+        onPointerLeave={finish}
+        onPointerCancel={finish}
       >
         <line x1="24" y1={H - 40} x2={W - 24} y2={H - 40} stroke="#CFCAC0" strokeWidth="1.5" strokeDasharray="6 6" />
         {paths.map((d, i) => (

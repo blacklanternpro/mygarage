@@ -123,7 +123,7 @@ export async function SalePack({ params }: { params: Promise<{ vehicleId: string
         <div>
           <p className="text-[12px] font-semibold text-slate">Verification code</p>
           <p className="readout text-[20px] font-semibold tracking-wider">{code.match(/.{4}/g)?.join("-")}</p>
-          <p className="text-[12px] text-slate">SHA-256 of this pack's contents. Any edit changes the code. Generated {formatDateTime(generated)}.</p>
+          <p className="text-[12px] text-slate">SHA-256 of this pack’s contents. Any edit changes the code. Generated {formatDateTime(generated)}.</p>
         </div>
         <p className="max-w-[34ch] text-right text-[12px] text-slate">Records published by the workshop directly from its system. Not editable by the owner.</p>
       </footer>

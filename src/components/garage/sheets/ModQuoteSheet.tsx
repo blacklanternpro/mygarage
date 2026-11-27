@@ -75,7 +75,7 @@ export function ModQuoteSheet({ data, onClose }: { data: GarageData; onClose: ()
       }
     >
       {done ? (
-        <SuccessBanner>Sent straight to the advisor's queue with your VIN and exact variant attached. Replies land in this vehicle's messages.</SuccessBanner>
+        <SuccessBanner>Sent straight to the advisor’s queue with your VIN and exact variant attached. Replies land in this vehicle’s messages.</SuccessBanner>
       ) : (
         <div className="space-y-4">
           <div className="rounded-md border border-chalk bg-white px-3 py-2 text-[13px]">

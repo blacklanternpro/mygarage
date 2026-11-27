@@ -143,7 +143,7 @@ export function GarageView({ data }: { data: GarageData }) {
               </div>
             </dl>
             {t.first?.by === "KM" && t.kmProjectedDate ? (
-              <p className="mt-2 text-[13px] text-slate">At your usual {Math.round(v.avgKmPerDay)} km a day you'll hit {formatKm(t.kmDue ?? 0)} around {formatDate(t.kmProjectedDate)}, before the date. We'll remind you whichever comes first.</p>
+              <p className="mt-2 text-[13px] text-slate">At your usual {Math.round(v.avgKmPerDay)} km a day you’ll hit {formatKm(t.kmDue ?? 0)} around {formatDate(t.kmProjectedDate)}, before the date. We’ll remind you whichever comes first.</p>
             ) : null}
             <div className="mt-4 flex flex-wrap gap-2 lg:hidden">
               <button type="button" className="btn btn-primary" onClick={() => setSheet({ kind: "wallet" })}>

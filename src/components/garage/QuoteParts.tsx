@@ -121,7 +121,7 @@ export function FixedQuoteCard({ quote, licence, paid, children }: { quote: Fixe
       {quote.status === "ISSUED" ? <p className="mt-2 text-[12px] leading-snug text-slate">{FIXED_QUOTE_TERMS}</p> : null}
       {quote.status === "APPROVED" && quote.decidedAt ? (
         <p className="mt-2 flex items-center gap-1.5 text-[12.5px] font-semibold text-rag-green">
-          <Icon name="shield" size={15} /> Signed and timestamped {formatDate(quote.decidedAt)}. Stored in the workshop's compliance vault.
+          <Icon name="shield" size={15} /> Signed and timestamped {formatDate(quote.decidedAt)}. Stored in the workshop’s compliance vault.
         </p>
       ) : null}
       {children ? <div className="mt-3 flex flex-wrap gap-2">{children}</div> : null}

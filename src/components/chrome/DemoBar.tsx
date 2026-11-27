@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { Icon, type IconName } from "@/components/ui/Icon";
 import { MagicLinkModal } from "./MagicLinkModal";
 import { AdapterInspector } from "./AdapterInspector";
@@ -12,30 +12,39 @@ const SURFACES: { href: string; label: string; short: string; icon: IconName; ma
   { href: "/bay", label: "Bay tablet", short: "Bay", icon: "bay", match: (p) => p.startsWith("/bay") },
 ];
 
+const KEY = "mg-demobar";
+function readCollapsed(): boolean {
+  try {
+    return localStorage.getItem(KEY) === "collapsed";
+  } catch {
+    return false;
+  }
+}
+function subscribeCollapsed(cb: () => void) {
+  window.addEventListener(KEY, cb);
+  window.addEventListener("storage", cb);
+  return () => {
+    window.removeEventListener(KEY, cb);
+    window.removeEventListener("storage", cb);
+  };
+}
+
 /** Discreet, collapsible demo chrome: surface switcher, adapter inspector, magic-link preview, reset. */
 export function DemoBar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [collapsed, setCollapsed] = useState(false);
+  const collapsed = useSyncExternalStore(subscribeCollapsed, readCollapsed, () => false);
   const [inspector, setInspector] = useState(false);
   const [magic, setMagic] = useState(false);
   const [resetting, setResetting] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
-
-  useEffect(() => {
+  const setCollapsedPersist = (v: boolean) => {
     try {
-      setCollapsed(localStorage.getItem("mg-demobar") === "collapsed");
+      localStorage.setItem(KEY, v ? "collapsed" : "open");
     } catch {
       /* storage unavailable */
     }
-  }, []);
-  const setCollapsedPersist = (v: boolean) => {
-    setCollapsed(v);
-    try {
-      localStorage.setItem("mg-demobar", v ? "collapsed" : "open");
-    } catch {
-      /* ignore */
-    }
+    window.dispatchEvent(new Event(KEY));
   };
   useEffect(() => {
     if (!toast) return;

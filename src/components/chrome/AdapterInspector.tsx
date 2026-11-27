@@ -62,7 +62,7 @@ export function AdapterInspector({ onMagicLink, onClose }: { onMagicLink: () => 
               <Icon name="close" size={16} />
             </button>
           </div>
-          {error ? <p className="text-[13px] text-white/70">Couldn't load adapter status.</p> : null}
+          {error ? <p className="text-[13px] text-white/70">Couldn’t load adapter status.</p> : null}
           <ul className="grid gap-1.5 sm:grid-cols-2">
             {(data?.adapters ?? []).map((a) => (
               <li key={a.port} className="rounded border border-white/10 px-2.5 py-2">
@@ -88,7 +88,7 @@ export function AdapterInspector({ onMagicLink, onClose }: { onMagicLink: () => 
             </button>
           </div>
           <ol className="max-h-56 space-y-1 overflow-y-auto pr-1">
-            {data && !data.events.length ? <li className="text-[13px] text-white/60">No calls yet. Approve a quote, publish an invoice or dictate a finding and they'll appear here.</li> : null}
+            {data && !data.events.length ? <li className="text-[13px] text-white/60">No calls yet. Approve a quote, publish an invoice or dictate a finding and they’ll appear here.</li> : null}
             {(data?.events ?? []).map((e) => (
               <li key={e.id} className="flex gap-2 text-[12px] leading-snug text-white/80">
                 <span className="readout w-16 shrink-0 text-white/45">{new Date(e.createdAt).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", second: "2-digit" })}</span>

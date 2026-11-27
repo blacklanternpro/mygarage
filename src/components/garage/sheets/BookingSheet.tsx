@@ -52,7 +52,7 @@ export function BookingSheet({ data, preselected, onClose }: { data: GarageData;
     >
       {done ? (
         <SuccessBanner>
-          Thanks. {data.workshop.name} will confirm {formatShortDay(day)} by SMS{loan ? " and have a loan car ready" : ""}. You'll see it in your messages too.
+          Thanks. {data.workshop.name} will confirm {formatShortDay(day)} by SMS{loan ? " and have a loan car ready" : ""}. You’ll see it in your messages too.
         </SuccessBanner>
       ) : (
         <div className="space-y-5">
@@ -118,7 +118,7 @@ export function BookingSheet({ data, preselected, onClose }: { data: GarageData;
           <label className="flex min-h-12 cursor-pointer items-center justify-between gap-3 rounded-md border-[1.5px] border-chalk px-3 py-2">
             <span>
               <span className="block font-semibold">I need a loan car</span>
-              <span className="block text-[13px] text-slate">Subject to availability. We'll confirm.</span>
+              <span className="block text-[13px] text-slate">Subject to availability. We’ll confirm.</span>
             </span>
             <input type="checkbox" role="switch" className="h-6 w-6 accent-sump" checked={loan} onChange={(e) => setLoan(e.target.checked)} />
           </label>
