@@ -1,8 +1,10 @@
+import { connection } from "next/server";
 import { appContext, errorResponse } from "@/lib/server";
 import { notFound } from "@/domain/errors";
 
 /** Serves Stage 1 media from the mock store. Stage 2: signed Cloudflare R2 URLs instead. */
 export async function GET(req: Request) {
+  await connection();
   try {
     const { adapters, workshop } = await appContext();
     const key = new URL(req.url).searchParams.get("key") ?? "";

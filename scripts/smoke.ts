@@ -54,7 +54,10 @@ async function sign(page: Page) {
   for (let i = 1; i <= 12; i++) await page.mouse.move(b.x + 30 + i * 18, b.y + b.height * (0.6 + Math.sin(i) * 0.2), { steps: 2 });
   await page.mouse.up();
 }
-const shot = (page: Page, name: string) => page.screenshot({ path: path.join(OUT, `${name}.png`) });
+const shot = async (page: Page, name: string) => {
+  await page.waitForTimeout(450); // let sheet/flip animations settle
+  await page.screenshot({ path: path.join(OUT, `${name}.png`) });
+};
 
 async function main() {
   console.log(`Smoke testing ${BASE}`);
@@ -175,7 +178,7 @@ async function main() {
     const dlg = phone.getByRole("dialog");
     await dlg.getByText("In 3 months").click();
     await dlg.getByRole("button", { name: "Remind me" }).click();
-    await dlg.getByText(/We'll remind you on/).waitFor({ timeout: 8000 });
+    await dlg.getByText(/We.ll remind you on/).waitFor({ timeout: 8000 });
   });
   const modText = `Dual battery for a fridge, smoke test ${Date.now()}`;
   await check("submit a mod quote request (VIN attached)", async () => {
@@ -185,7 +188,7 @@ async function main() {
     await dlg.getByLabel("Type of job").selectOption("DUAL_BATTERY");
     await dlg.getByLabel("What are you after?").fill(modText);
     await dlg.getByRole("button", { name: "Send quote request" }).click();
-    await dlg.getByText(/advisor's queue/).waitFor({ timeout: 8000 });
+    await dlg.getByText(/advisor.s queue/).waitFor({ timeout: 8000 });
   });
   await check("Verified Sale Pack hides owner PII and payment details", async () => {
     await phone.goto(`${BASE}/sale-pack/${hilux}`, { waitUntil: "networkidle" });

@@ -2,7 +2,7 @@
 
 > Source of truth: `docs/MARKET_RESEARCH.md` (section numbers below refer to it).
 > Guardrails: `CLAUDE.md`. Visual system: `DESIGN.md`.
-> Status: **Stage 1 in progress** (overnight autonomous build, 27/11/2026).
+> Status: **Stage 1 complete** (overnight autonomous build, 27/11/2026). See `docs/MORNING_BRIEFING.md`.
 
 ---
 
@@ -135,6 +135,14 @@ PDF (drop / sample) → IngestionAdapter.extractInvoice()
 | ADR-014 | **Voice → finding structuring is a pure domain function** (`structureDictation`) over the STT transcript (component, side, condition, horizon, price range) | Deterministic in Stage 1; Stage 3 can put an LLM behind a port with the same output schema | Stage 3 |
 | ADR-015 | **Sample PDF is generated (pdf-lib) and committed** to `public/samples/`; the mock OCR genuinely reads its text | The bridge demo is real end to end, not a canned animation | Stage 2 real OCR |
 | ADR-016 | **Demo clock:** `now()` honours `DEMO_NOW` (ISO) for tests; seed dates are relative to now (service due +24 d, rego +41 d) | Demo always looks current; tests are stable | — |
+| ADR-017 | **No DB transactions inside customer/counter actions in Stage 1.** PGlite exposes one connection and mock adapters log through it, so a wrapping transaction would deadlock. All validation (signature, AAAA completeness, quote state) runs before the first write | Simplicity on embedded Postgres | Stage 2: node-postgres transactions + outbox for SMS/push |
+| ADR-018 | **Signatures are sanitised server-side**: only `M/L` path data is kept and re-wrapped in a canonical SVG; the vault renders them via `<img>` data URLs | Client-supplied SVG is an XSS vector | — |
+| ADR-019 | **Seed realism over the brief's wording**: the 2016 PX Ranger 3.2 has a timing chain, so its watch item is the 150,000 km major service (drive belt + fluids), not a timing belt | A mechanic audience would spot it immediately | — |
+| ADR-020 | **Typographic apostrophes in UI copy** (’) to satisfy `react/no-unescaped-entities` without HTML entities | Cleaner copy and lint-clean | — |
+
+**Stage 1 delivered (27/11/2026):** 19 tables, 27 API routes, 7 ports, 4 surfaces + Sale Pack;
+39 unit/integration tests; 23-check E2E smoke on the production build. Known gaps are listed in
+the morning briefing (§5).
 
 ---
 

@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { eq } from "drizzle-orm";
 import { walletPasses } from "@/db/schema";
 import { scoped } from "@/db/tenant";
@@ -6,6 +7,7 @@ import { notFound } from "@/domain/errors";
 
 /** Mock "Add to Wallet": returns the unsigned pass.json (Apple) or generic object (Google). */
 export async function GET(req: Request, ctx: { params: Promise<{ serial: string }> }) {
+  await connection();
   try {
     const { db, workshop } = await appContext();
     const serial = decodeURIComponent((await ctx.params).serial);

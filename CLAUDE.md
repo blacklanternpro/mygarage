@@ -111,11 +111,16 @@ npm run dev          # http://localhost:3000 (auto-migrates + auto-seeds an empt
 npm run typecheck    # tsc --noEmit
 npm test             # vitest (in-memory PGlite; no Docker)
 npm run build        # production build must stay green
+npm run lint         # eslint (next core-web-vitals + typescript)
+npm run verify       # lint + typecheck + test + build — run before every push
+npm run e2e:smoke    # Playwright smoke against SMOKE_URL (default http://localhost:3000)
 npm run db:generate  # drizzle-kit generate after schema changes; commit drizzle/ migrations
 ```
 
 - Dynamic route `params`/`searchParams` are Promises — always `await` them.
-- Pages that read the DB export `dynamic = "force-dynamic"`; DB init is lazy (never at import).
+- Cache Components is on: no `dynamic` route config. DB reads live in components under `<Suspense>` and
+  go through `appContext()` (calls `connection()`); GET route handlers call `await connection()` first.
+  DB init is lazy (never at import).
 - Fonts are self-hosted via `next/font/local` (`src/app/fonts/`); no network fonts at build.
 - Mutations: route handlers under `src/app/api/**` validate input with Zod, call a domain
   service, return JSON. Client components then `router.refresh()`.

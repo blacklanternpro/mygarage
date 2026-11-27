@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import { eq } from "drizzle-orm";
 import { customers, serviceRecords, vehicles } from "@/db/schema";
 import { scoped } from "@/db/tenant";
@@ -8,6 +9,7 @@ import { licenceLabel } from "@/domain/compliance";
 
 /** Downloadable itemised tax invoice for any verified service record. */
 export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> }) {
+  await connection();
   try {
     const { db, workshop, adapters } = await appContext();
     const id = (await ctx.params).id;
